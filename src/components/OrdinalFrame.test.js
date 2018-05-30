@@ -24,4 +24,20 @@ describe("OrdinalFrame", () => {
     )
     expect(wrapper.find("Frame").length).toEqual(1)
   })
+
+  it("doesn't honour pixelColumnWidth with radial projection", ()  => {
+    global.console.error = jest.fn();
+    shallow(<OrdinalFrame data={someBarData} pixelColumnWidth={20} projection={"radial"} />)
+    expect(global.console.error).toHaveBeenCalledWith("pixelColumnWidth is not honored in radial mode")
+  })
+
+  it("works fine pixelColumnWidth on vertical", () => {
+    const wrapper = shallow(<OrdinalFrame data={someBarData} pixelColumnWidth={20} projection={"vertical"} />)
+    expect(wrapper.props().size[0]).toBe(20)
+  })
+
+  it("works fine pixelColumnWidth on horizontal", () => {
+    const wrapper = shallow(<OrdinalFrame data={someBarData} pixelColumnWidth={20} projection={"horizontal"}/>)
+    expect(wrapper.props().size[1]).toBe(20)
+  })
 })
